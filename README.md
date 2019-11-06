@@ -1,5 +1,5 @@
 # Handling Tuples in NodeJs
-This example demonstrates how to handle inserting and selecting tuples in NodeJs.
+This example demonstrates how to handle inserting and selecting tuples in Node.js.
 
 Contributors: [Jorge Bay Gondra](https://github.com/jorgebay) and [Andrew Tolbert](https://github.com/tolbertam), copied from [here](https://github.com/datastax/nodejs-driver/blob/master/examples/tuple/tuple-insert-select.js)
 
