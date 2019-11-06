@@ -1,0 +1,23 @@
+{
+  "name": "handling-tuples-nodejs",
+  "version": "1.0.0",
+  "description": "This application demonstrates how to handle tuples in NodeJS",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DataStax-Examples/handling-tuples-nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DataStax-Examples/handling-tuples-nodejs/issues"
+  },
+  "homepage": "https://github.com/DataStax-Examples/handling-tuples-nodejs#readme",
+  "dependencies": {
+    "cassandra-driver": "^4.3.0"
+  }
+}

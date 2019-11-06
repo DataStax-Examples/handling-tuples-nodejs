@@ -1,45 +1,58 @@
-# datastax-example-template
-A short few sentences describing what is the purpose of the example and what the user will learn
+# Handling Tuples in NodeJs
+This example demonstrates how to handle inserting and selecting tuples in NodeJs.
 
-e.g.
-This application shows how to use configure your NodeJs application to connect to DDAC/Cassandra/DSE or an Apollo database at runtime.
-
-Contributors: A listing of contributors to this repository linked to their github profile
+Contributors: [Jorge Bay Gondra](https://github.com/jorgebay) and [Andrew Tolbert](https://github.com/tolbertam), copied from [here](https://github.com/datastax/nodejs-driver/blob/master/examples/tuple/tuple-insert-select.js)
 
 ## Objectives
-A list of the top objectives that are being demonstrated by this sample
 
-e.g.
-* To demonstrate how to specify at runtime between a standard (DSE/DDAC/C*) client configuration and an Apollo configuration for the same application.
+* To demonstrate how to insert and select tuples in NodeJs.
   
 ## Project Layout
-A list of key files within this repo and a short 1-2 sentence description of why they are important to the project
 
-e.g.
-* app.js - The main application file which contains all the logic to switch between the configurations
+* app.js - The main application file which contains all the logic to handle tuples
 
 ## How this Sample Works
-A description of how this sample works and how it demonstrates the objectives outlined above
+This application works by connecting to a locally hosted DDAC/C*/DSE database, creating a keyspace and schema, and then demonstrating how to insert and retrieve tuples in NodeJs.
+
+### Inserting Tuples
+Inserting tuples in NodeJs requires using the `cassandra.types.Tuples` class and then passing that in as a parameter to the prepared statement as shown below:
+
+```    // Create a new instance of a Tuple
+    const currencies = new cassandra.types.Tuple('USD', 'EUR');
+    const query = 'INSERT INTO examples.tuple_forex (name, time, currencies, value)  VALUES (?, ?, ?, ?)';
+    const params = [ 'market1', cassandra.types.TimeUuid.now(), currencies, new cassandra.types.BigDecimal(11, 1) ];
+    return client.execute(query, params, { prepare: true});
+```
+
+**Note** The `{ prepare: true}` is how to make a statement in NodeJs into a prepared statement, which is best practice.
+
+### Retrieving Tuples
+Tuples are retrieved in NodeJs as a Map of objects.  This means that to access them you need to use the `.get(index)` syntax as shown below:
+
+```    
+const row = result.first();
+console.log('%s to %s: %s', row['currencies'].get(0), row['currencies'].get(1), row['value']);
+```
 
 ## Setup and Running
 
 ### Prerequisites
-The prerequisites required for this application to run
 
-e.g.
 * NodeJs version 8
-* A DSE 6.7 Cluster
-* Schema added to the cluster
+* A DDAC, C*, or DSE Cluster
+
+**Note** This application assumes that the cluster is running locally and that the datacenter is named `dc1`.  If this is not the case then you will need to change this in line 4:
+`const client = new cassandra.Client({ contactPoints: ['127.0.0.1'], localDataCenter: 'dc1' });`
 
 ### Running
-The steps and configuration needed to run and build this application
-
-e.g.
 To run this application use the following command:
 
 `node app.js`
 
 This will produce the following output:
 
-`Connected to cluster with 3 host(s) ["XX.XX.XX.136:9042","XX.XX.XX.137:9042","XX.XX.XX.138:9042"]`
+```
+Inserting
+USD to EUR: 1.1
+```
 
